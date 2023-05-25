@@ -16,6 +16,10 @@ const app = express();
 import connect from "./db/connect.js";
 
 app.use(bodyParser.json());
+// test home route
+// app.use("/", (req, res) => {
+//   res.send("home route up");
+// });
 // routes
 app.use("/api/v1/", authRoutes);
 app.use("/api/v1", trackRoutes);
