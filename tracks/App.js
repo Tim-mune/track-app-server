@@ -8,6 +8,7 @@ import TrackListScreen from "./src/screens/TrackListScreen";
 import { createAppContainer, createSwitchNavigator } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
+import { setNavigator } from "./src/navigationRef";
 import { AppProvider } from "./src/context/appContext";
 const switchNavigator = createSwitchNavigator({
   loginFlow: createStackNavigator({
@@ -28,7 +29,11 @@ const App = createAppContainer(switchNavigator);
 export default () => {
   return (
     <AppProvider>
-      <App />
+      <App
+        ref={(navigator) => {
+          setNavigator(navigator);
+        }}
+      />
     </AppProvider>
   );
 };

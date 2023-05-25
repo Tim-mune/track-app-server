@@ -7,53 +7,67 @@ const SignupScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
-  const { signUp, loading } = useGlobalContext();
+  const { signUp, loading, user, Msg } = useGlobalContext();
+
   return (
-    <View style={styles.viewStyles}>
-      <Spacer />
-      <Text h2 style={styles.textStyles}>
-        create account
-      </Text>
-      {loading && (
+    <>
+      <View style={styles.viewStyles}>
+        <Text h2 style={styles.textStyles}>
+          welcome ,
+          <Text h2 style={{ color: "#CEEC13" }}>
+            to Tracks .
+          </Text>
+        </Text>
+        <Spacer />
         <Text h2 style={styles.textStyles}>
           create account
         </Text>
-      )}
 
-      <Input
-        label="Name"
-        value={name}
-        autoCapitalize="none"
-        autoCorrect={false}
-        style={styles.inputStyles}
-        onChangeText={(newName) => setName(newName)}
-      />
-      <Input
-        label="Email"
-        value={email}
-        style={styles.inputStyles}
-        autoComplete="email"
-        autoCapitalize="none"
-        autoCorrect={false}
-        onChangeText={(newemail) => setEmail(newemail)}
-      />
-      <Input
-        label="Password"
-        secureTextEntry={true}
-        value={password}
-        autoCapitalize="none"
-        autoCorrect={false}
-        style={styles.inputStyles}
-        onChangeText={(newPassword) => setPassword(newPassword)}
-      />
+        {loading && (
+          <Text h2 style={{ fontSize: 30, color: "#14eb33", letterSpacing: 1 }}>
+            processing..
+          </Text>
+        )}
+        <Text h2 style={{ fontSize: 30, color: "#14eb33", letterSpacing: 1 }}>
+          {Msg}
+        </Text>
 
-      <Spacer />
-      <Button
-        title="Sign up"
-        style={styles.buttonStyles}
-        onPress={() => signUp(name, email, password)}
-      />
-    </View>
+        <Input
+          label="Name"
+          value={name}
+          autoCapitalize="none"
+          autoCorrect={false}
+          style={styles.inputStyles}
+          onChangeText={(newName) => setName(newName)}
+        />
+        <Input
+          label="Email"
+          value={email}
+          style={styles.inputStyles}
+          autoComplete="email"
+          autoCapitalize="none"
+          autoCorrect={false}
+          onChangeText={(newemail) => setEmail(newemail)}
+        />
+        <Input
+          label="Password"
+          secureTextEntry={true}
+          value={password}
+          autoCapitalize="none"
+          autoCorrect={false}
+          style={styles.inputStyles}
+          onChangeText={(newPassword) => setPassword(newPassword)}
+        />
+
+        <Spacer />
+        <Button
+          title="Sign up"
+          style={styles.buttonStyles}
+          onPress={() => signUp(name, email, password)}
+        />
+        {user && navigation.navigate("mainFlow")}
+      </View>
+    </>
   );
 };
 SignupScreen.navigationOptions = () => {
@@ -81,6 +95,8 @@ const styles = StyleSheet.create({
   },
   buttonStyles: {
     backgroundColor: "#14EB21",
+    fontSize: 25,
+    color: "#CEEC13",
   },
   inputStyles: {
     color: "#FFF",
