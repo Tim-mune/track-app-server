@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { View, StyleSheet } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
 import { Text, Input, Button } from "react-native-elements";
 import Spacer from "../components/Spacer";
 import useGlobalContext from "../context/appContext";
@@ -7,7 +7,11 @@ const SignupScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
-  const { signUp, loading, user, Msg } = useGlobalContext();
+  const { signUp, loading, user, Msg, autoSignIn } = useGlobalContext();
+
+  useEffect(() => {
+    autoSignIn();
+  }, []);
 
   return (
     <>
@@ -65,7 +69,14 @@ const SignupScreen = ({ navigation }) => {
           style={styles.buttonStyles}
           onPress={() => signUp(name, email, password)}
         />
-        {user && navigation.navigate("mainFlow")}
+        <TouchableOpacity onPress={() => navigation.navigate("Signin")}>
+          <Spacer />
+          <Text h4 style={{ color: "#fff9", marginTop: 10 }}>
+            Already have an account? Sign in instead
+          </Text>
+        </TouchableOpacity>
+        {/* this works too */}
+        {/* {user && navigation.navigate("mainFlow")} */}
       </View>
     </>
   );

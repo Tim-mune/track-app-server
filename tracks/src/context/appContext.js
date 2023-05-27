@@ -31,29 +31,49 @@ export const AppProvider = ({ children }) => {
       await AsyncStorage.setItem("token", res.data.token);
       dispatch({ type: "REGISTER_SUCCESS", payload: res.data });
       setTimeout(() => clearMsg(), 3000);
+      navigate("Tracklist");
     } catch (error) {
       console.log(error);
       dispatch({ type: "REGISTER_FAIL" });
       setTimeout(() => clearMsg(), 3000);
     }
   };
-  const signIn = async (name, email, password) => {
+  const signIn = async (email, password) => {
+    dispatch({ type: "LOGIN" });
+    setTimeout(() => clearMsg(), 3000);
     try {
+      const res = await customFetch.post("/login", { email, password });
+      console.log(res.data);
+      dispatch({
+        type: "LOGIN_SUCCESS",
+        payload: { msg: res.data.msg, user: res.data.token },
+      });
+      setTimeout(() => clearMsg(), 3000);
     } catch (error) {
-      console.log(error);
+      await dispatch({ type: "LOGIN_FAIL" });
+      console.log(error.response.msg);
+      setTimeout(() => clearMsg(), 3000);
     }
+  };
+  const autoSignIn = async () => {
+    const token = await AsyncStorage.getItem("token");
+    if (token) {
+      dispatch({ type: "AUTOSIGNIN", payload: token });
+      navigate("trackListFlow");
+    }
+    return;
   };
 
   const signOut = async () => {
-    try {
-      // make request to Api
-    } catch (error) {
-      console.log(error.response.data);
-    }
+    await AsyncStorage.removeItem("token");
+    dispatch({ type: "SIGNOUT" });
+    // navigate("loginFlow");
   };
 
   return (
-    <AppContext.Provider value={{ ...state, signUp }}>
+    <AppContext.Provider
+      value={{ ...state, signUp, signIn, signOut, autoSignIn }}
+    >
       {children}
     </AppContext.Provider>
   );
