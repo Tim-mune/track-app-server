@@ -12,6 +12,10 @@ export const AppProvider = ({ children }) => {
     user: null,
     Msg: "",
     isSignedIn: false,
+    currentLocation: {},
+    locations: [],
+    recording: false,
+    name: "",
   };
   const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -70,9 +74,36 @@ export const AppProvider = ({ children }) => {
     // navigate("loginFlow");
   };
 
+  const startRecording = async () => {
+    dispatch({ type: "STARTRECORD" });
+  };
+
+  const stopRecording = async () => {
+    dispatch({ type: "STOPRECORD" });
+  };
+
+  const addLocation = async (location, recording) => {
+    if (recording) {
+      dispatch({ type: "ADDCURRRECORD", payload: location });
+    }
+    dispatch({ type: "ADDRECORD", payload: location });
+  };
+  const changeName = (newName) => {
+    dispatch({ type: "CHANGENAME", payload: newName });
+  };
   return (
     <AppContext.Provider
-      value={{ ...state, signUp, signIn, signOut, autoSignIn }}
+      value={{
+        ...state,
+        signUp,
+        signIn,
+        signOut,
+        autoSignIn,
+        addLocation,
+        stopRecording,
+        startRecording,
+        changeName,
+      }}
     >
       {children}
     </AppContext.Provider>

@@ -37,5 +37,20 @@ const reducer = (state, action) => {
   if (action.type === "SIGNOUT") {
     return { ...state, user: null };
   }
+  if (action.type === "ADDRECORD") {
+    return { ...state, currentLocation: action.payload };
+  }
+  if (action.type === "STARTRECORD") {
+    return { ...state, recording: true };
+  }
+  if (action.type === "STOPRECORD") {
+    return { ...state, recording: false };
+  }
+  if (action.type === "ADDCURRRECORD") {
+    return { ...state, locations: [...state.locations, action.payload] };
+  }
+  if (action.type === "CHANGENAME") {
+    return { ...state, name: action.payload };
+  }
 };
 export default reducer;
